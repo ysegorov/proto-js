@@ -1,15 +1,20 @@
-////////// API //////////
+/* jshint node:true */
 
-// To be part of ECMAScript.next
-if (!Object.getOwnPropertyDescriptors) {
-    Object.getOwnPropertyDescriptors = function (obj) {
-        var descs = {};
-        Object.getOwnPropertyNames(obj).forEach(function(propName) {
-            descs[propName] = Object.getOwnPropertyDescriptor(obj, propName);
-        });
-        return descs;
-    };
-}
+/**!
+ * Copyright (c) 2012 Axel Rauschmayer
+ * Licensed under the MIT (http://www.opensource.org/licenses/mit-license.php)
+ * Copyright notice and license must remain intact for legal use
+ *
+ */
+
+// see https://github.com/rauschma/proto-js/issues/4 for license info
+
+
+'use strict';
+
+
+var getDescriptors = require('object.getownpropertydescriptors');
+
 
 /**
  * The root of all classes that adhere to "the prototypes as classes" protocol.
@@ -35,53 +40,11 @@ var Proto = {
     extend: function (subProps) {
         // We cannot set the prototype of "subProps"
         // => copy its contents to a new object that has the right prototype
-        var subProto = Object.create(this, Object.getOwnPropertyDescriptors(subProps));
+        var subProto = Object.create(this, getDescriptors(subProps));
         subProto.super = this; // for super-calls
         return subProto;
     },
 };
 
-/**
- * Optional: compatibility with constructor functions
- */
-Function.prototype.extend = function(subProps) {
-    var constrFunc = this;
-    // Let a prototype-as-class extend a constructor function constrFunc.
-    // Step 1: tmpClass is Proto, but as a sub-prototype of constrFunc.prototype
-    var tmpClass = Proto.extend.call(constrFunc.prototype, Proto);
-    // Step 2: tmpClass is a prototype-as-class => use as such
-    return tmpClass.extend(subProps);
-};
 
-////////// Demo //////////
-
-//***** Code *****
-// Superclass
-var Person = Proto.extend({
-    constructor: function (name) {
-        this.name = name;
-    },
-    describe: function() {
-        return "Person called "+this.name;
-    },
-});
-
-// Subclass
-var Employee = Person.extend({
-    constructor: function (name, title) {
-        Employee.super.constructor.call(this, name);
-        this.title = title;
-    },
-    describe: function () {
-        return Employee.super.describe.call(this)+" ("+this.title+")";
-    },
-});
-//*/
-
-/***** Interaction *****
-var jane = Employee.new("Jane", "CTO"); // normally: new Employee(...)
-> Employee.isPrototypeOf(jane) // normally: jane instanceof Employee
-true
-> jane.describe()
-'Person called Jane (CTO)'
-*/
+module.exports = Proto;
