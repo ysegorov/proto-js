@@ -1,0 +1,28 @@
+{
+  "name": "proto-js",
+  "version": "0.1.0",
+  "description": "Prototypes as classes (Javascript inheritance implementation)",
+  "main": "Proto.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ysegorov/proto-js.git"
+  },
+  "keywords": [
+    "javascript",
+    "inheritance",
+    "prototype",
+    "class"
+  ],
+  "author": "Yuri Egorov <ysegorov@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ysegorov/proto-js/issues"
+  },
+  "homepage": "https://github.com/ysegorov/proto-js#readme",
+  "dependencies": {
+    "object.getownpropertydescriptors": "^1.0.2"
+  }
+}
